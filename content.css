@@ -1,21 +1,24 @@
 [data-redirect]:after {
-                content: attr(data-redirect);
-                visibility: visible;
-                position: absolute;
-                display: block;
-                left: 0; 
-                top: 100%;
-                z-index: 10000000;
-                background: #383838;
-                color: white;
-                text-shadow: 0 -1px 0px black;
-                padding: 8px 10px;
-                font-size: 12px;
-                line-height: 12px;
-                white-space: nowrap;
-                box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
-            }
-            
-            [data-redirect] {
-                position:relative;
-            }
+	content: attr(data-redirect);
+	visibility: visible;
+	position: absolute;
+	display: block;
+	left: 0; 
+	top: 100%;
+	z-index: 10000000;
+	background: #383838;
+	color: white;
+	text-shadow: 0 -1px 0px black;
+	padding: 8px 10px;
+	font-size: 12px;
+	line-height: 12px;
+	white-space: nowrap;
+	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+	-webkit-transform: translateY(5px);
+	-moz-transform: translateY(5px);
+	transform: translateY(5px);
+}
+
+[data-redirect] {
+	position:relative;
+}

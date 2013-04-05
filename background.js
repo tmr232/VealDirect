@@ -33,17 +33,16 @@ function callbackOnHeadersReceivedFactory(tabId, originalUrl) {
     function callbackOnHeadersReceived(info) {
         console.log(info);
         console.log("Abc");
-        var redirectLocation = null;
+        var redirectLocation = originalUrl;
         console.log(info.statusLine.match(redirectRE));
         if (null !== info.statusLine.match(redirectRE)) {
             /* Get the redirect url */
             redirectLocation = getLocation(info.responseHeaders);
-        
-            /* Inject code to set a listener on the events... */
-            var message = {type:"getClickedEl", original:originalUrl, redirect:redirectLocation};
-            chrome.tabs.sendMessage(tabId, message);
-            
         }
+		/* Inject code to set a listener on the events... */
+		var message = {type:"getClickedEl", original:originalUrl, redirect:redirectLocation};
+		chrome.tabs.sendMessage(tabId, message);
+
         return {cancel:true};
     }
     
