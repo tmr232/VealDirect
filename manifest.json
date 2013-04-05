@@ -16,6 +16,12 @@
             "css":["content.css"]
             }
     ],
+        
+          "icons": {
+    "16": "Veal16.png",
+    "48": "Veal48.png",
+    "128": "Veal128.png"
+  },
 
   "manifest_version": 2
 }
