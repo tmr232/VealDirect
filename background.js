@@ -32,6 +32,7 @@ function callbackOnExecuteScriptFactory(tabId, message) {
 function callbackOnHeadersReceivedFactory(tabId, originalUrl) {
     function callbackOnHeadersReceived(info) {
         console.log(info);
+        console.log("Abc");
         var redirectLocation = null;
         console.log(info.statusLine.match(redirectRE));
         if (null !== info.statusLine.match(redirectRE)) {

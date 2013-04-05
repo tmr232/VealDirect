@@ -19,6 +19,18 @@ function callbackOnTimeoutFactory(link) {
     return callback;
 }
 
+function addKeyboardListener(link) {
+    function callbackOnKeyup(event) {
+        if (event.keyIdentifier === "U+001B") {
+            delete(link.dataset["redirect"]);
+            console.log("yay");
+        }
+        document.removeEventListener("keyup", arguments.callee, false);
+    }
+
+    document.addEventListener("keyup", callbackOnKeyup, false);
+}
+
 
 // Add a listener for getClickedEl requests from the extension
 function callbackOnMessage(request) {
@@ -31,8 +43,8 @@ function callbackOnMessage(request) {
         }
         // if everything matches - add a redirect hint.
         link.dataset["redirect"] = request.redirect;
+        addKeyboardListener(link);
         
-//        window.setTimeout(callbackOnTimeoutFactory(link), 5000);
     }
 }
 
