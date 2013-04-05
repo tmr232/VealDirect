@@ -127,9 +127,11 @@ function callbackOnHeadersReceivedFactory(tabId, originalUrl) {
         
             /* Inject code to set a listener on the events... */
             var message = {type:"getClickedEl", original:originalUrl, redirect:redirectLocation};
-            var callback = callbackOnExecuteScriptFactory(tabId, message);
-            var injectDetailes = {file:"content.js", allFrames:true};
-            chrome.tabs.executeScript(injectDetailes, callback);
+            chrome.tabs.sendMessage(tabId, message);
+            
+//            var callback = callbackOnExecuteScriptFactory(tabId, message);
+//            var injectDetailes = {file:"content.js", allFrames:true};
+//            chrome.tabs.executeScript(injectDetailes, callback);
         }
         return {cancel:true};
     }
