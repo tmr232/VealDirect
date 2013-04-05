@@ -4,7 +4,7 @@
   "description": "Ask before URL redirections!",
   
   "permissions": ["webRequest", "webRequestBlocking", "tabs", "contextMenus",
-                  "*://tinyurl.com/*", "*://bit.ly/*", "*://goo.gl/*"],
+                  "*://tinyurl.com/*", "*://bit.ly/*", "*://goo.gl/*", "file://*"],
   "background": {
     "scripts": ["background.js"]
   },

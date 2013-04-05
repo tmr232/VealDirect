@@ -82,6 +82,14 @@
 /*
  *  New code starts here!
  */
+
+/*
+ * TODO:
+ *  Use this http://stackoverflow.com/questions/7703697/how-to-retrieve-the-element-where-a-contextmenu-has-been-executed
+ *  to get the clicked element.
+ *  Than use css :after and content: attr(data-hint) to add a hint with the real URL!
+ */
+
 var redirectRE = /HTTP\/1\.1 3[\d]{2}/;
 var filter = {types:["main_frame"], urls:["*://tinyurl.com/*", "*://bit.ly/*", "*://goo.gl/*"]};
 
@@ -97,22 +105,36 @@ function getLocation(responseHeaders) {
 }
 
 
-function callbackOnHeadersReceived(info) {
-    console.log(info);
-    var redirectLocation = null;
-    console.log(info.statusLine.match(redirectRE));
-    if (null !== info.statusLine.match(redirectRE)) {
-        /* Get the redirect url */
-        try {
-            redirectLocation = getLocation(info.responseHeaders);
-        } finally {
-            return {cancel:true};
-        }
-    
-        /* Get the clicked element, and change it's url! */
-        
+function callbackOnExecuteScriptFactory(tabId, message) {
+    /* Tell the tab to change the link! */
+    function callbackOnExecuteScript() {
+        console.log("tabID " + tabId);
+        chrome.tabs.sendMessage(tabId, message);
     }
-    return {cancel:true};
+
+    return callbackOnExecuteScript;
+}
+
+
+function callbackOnHeadersReceivedFactory(tabId, originalUrl) {
+    function callbackOnHeadersReceived(info) {
+        console.log(info);
+        var redirectLocation = null;
+        console.log(info.statusLine.match(redirectRE));
+        if (null !== info.statusLine.match(redirectRE)) {
+            /* Get the redirect url */
+            redirectLocation = getLocation(info.responseHeaders);
+        
+            /* Inject code to set a listener on the events... */
+            var message = {type:"getClickedEl", original:originalUrl, redirect:redirectLocation};
+            var callback = callbackOnExecuteScriptFactory(tabId, message);
+            var injectDetailes = {file:"content.js", allFrames:true};
+            chrome.tabs.executeScript(injectDetailes, callback);
+        }
+        return {cancel:true};
+    }
+    
+    return callbackOnHeadersReceived;
 }
 var optExtraInfoSpec = ["blocking", "responseHeaders"];
 /*
@@ -134,7 +156,7 @@ function onClickCallback(info, tab) {
     var linkUrl = info.linkUrl;
     
     chrome.webRequest.onHeadersReceived.addListener(
-            callbackOnHeadersReceived,
+            callbackOnHeadersReceivedFactory(tab.id, linkUrl),
             {types:["xmlhttprequest"], urls:[linkUrl]},
             ["blocking", "responseHeaders"]
         );
