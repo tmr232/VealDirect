@@ -38,9 +38,13 @@ function callbackOnMessage(request) {
     if ("getClickedEl" === request.type) {
         var link = clickedEl;
         console.log(link);
-        if (link.href !== request.original) {
+        // Comparing to the original was removed because JS on facebook kills it.
+        // Another solution is to go up the tree till we reach the link...
+        // But since our actions are non-destructive (we do not change the link)
+        // it does not really matter for the time being.
+        /*if (link.href !== request.original) {
             return;
-        }
+        }*/
         // if everything matches - add a redirect hint.
         link.dataset["redirect"] = request.redirect;
         addKeyboardListener(link);
