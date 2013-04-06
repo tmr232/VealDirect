@@ -6,10 +6,9 @@
 
 var redirectRE = /HTTP\/1\.1 3[\d]{2}/;
 
-
 function getLocation(responseHeaders) {
     for (var i = responseHeaders.length - 1; i >= 0; --i) {
-        if (responseHeaders[i].name === "Location") {
+        if (responseHeaders[i].name.toLowerCase() === "location") {
             return responseHeaders[i].value;
         }
     }
