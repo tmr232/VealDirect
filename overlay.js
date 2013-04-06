@@ -107,7 +107,7 @@ a.redirect-button, a.redirect-button:link, a.redirect-button:visited {\
         <div id="redirect-overlay" class="redirect-active">\
             <div class="redirect-window">\
                 <div style="padding:20px;">\
-                    <img src="Veal.svg" id="veal-image"/>\
+                    <img id="veal-image"/>\
                 <p class="redirect-text" style="margin-top:45px">\
                     Following this link will take you to:\
                     </p>\
@@ -119,10 +119,10 @@ a.redirect-button, a.redirect-button:link, a.redirect-button:visited {\
                 </p>\
                 <div id="redirect-confirm">\
                     <div style="display:inline;text-align:left;width:100%;">\
-                    <a class="redirect-button redirect-go" href="#" id="redirect-go">Yes, Go!</a>\
+                    <a class="redirect-button redirect-go" id="redirect-go">Yes, Go!</a>\
                     </div>\
                     <div style="display:inline;text-align:right;margin-left:16px;">\
-                    <a class="redirect-button redirect-cancel" href="#" id="redirect-cancel">No, Cancel.</a>\
+                    <a class="redirect-button redirect-cancel" id="redirect-cancel">No, Cancel.</a>\
                     </div>\
                 </div>\
                 </div>\

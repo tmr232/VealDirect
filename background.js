@@ -40,8 +40,11 @@ function callbackOnHeadersReceivedFactory(tabId, originalUrl) {
         }
 		/* Inject code to set a listener on the events... */
 		var message = {type:"getClickedEl", original:originalUrl, redirect:redirectLocation};
+                console.log(message);
 		chrome.tabs.sendMessage(tabId, message);
+                console.log("sent");
 
+        chrome.webRequest.onHeadersReceived.removeListener(arguments.callee);
         return {cancel:true};
     }
     
