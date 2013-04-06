@@ -10,6 +10,17 @@ document.addEventListener("mousedown", function(event){
     }
 }, true);
 
+function createHTMLFragment(htmlStr, divID) {
+    var frag = document.createDocumentFragment(),
+        temp = document.createElement('div');
+        temp.id = divID;
+    temp.innerHTML = htmlStr;
+    while (temp.firstChild) {
+        frag.appendChild(temp.firstChild);
+    }
+    return frag;
+}
+
 
 function callbackOnTimeoutFactory(link) {
     function callback() {
@@ -46,8 +57,29 @@ function callbackOnMessage(request) {
             return;
         }*/
         // if everything matches - add a redirect hint.
-        link.dataset["redirect"] = request.redirect;
-        addKeyboardListener(link);
+//        link.dataset["redirect"] = request.redirect;
+//        addKeyboardListener(link);
+        
+        console.log("yay");
+        var body = document.body;
+        var fragment = createHTMLFragment(overlay, "redirect-div-id");
+        var vealImage = chrome.extension.getURL("veal.svg");
+        var img = fragment.querySelector("#veal-image");
+        fragment.querySelector("div").dir="ltr";
+        img.src = vealImage;
+        var go = fragment.querySelector("#redirect-go");
+        go.href = request.redirect;
+        var cancel = fragment.querySelector("#redirect-cancel");
+        function onclick() {
+            var elem = document.body.querySelector("#redirect-overlay");
+            elem.parentElement.removeChild(elem);
+        }
+        cancel.onclick = onclick;
+        
+        var redirectUrl = fragment.querySelector("#redirect-url");
+        redirectUrl.innerHTML = request.redirect;
+        console.log("yay2");
+        body.appendChild(fragment);
         
     }
 }

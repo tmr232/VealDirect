@@ -1,41 +1,6 @@
 <html>
     <head>
 <style>
-            #inner {
-			margin: 0px auto;
-			width:50%;
-			border:1px solid black;
-			top: 50%;
-			}
-			#outer {
-				width:100%;
-				height:100%;
-				min-height:100%;
-			}
-			.btn {
-                            display:block;
-                            width:120px;
-                            text-align: center;
-                            background-color:#123456;
-                            padding:10px;
-                            color:#fdfdfd;
-                            border-radius: 5px;
-                            text-decoration: none;
-                            font-family: sans-serif;
-                            font-weight: bold;
-			}
-                        .button {
-    font: bold 11px Arial;
-    text-decoration: none;
-    background-color: #EEEEEE;
-    color: #333333;
-    padding: 2px 6px 2px 6px;
-    border-top: 1px solid #CCCCCC;
-    border-right: 1px solid #333333;
-    border-bottom: 1px solid #333333;
-    border-left: 1px solid #CCCCCC;
-   }
-
 #redirect-overlay {
     width: 100%;
     height: 100%;
@@ -50,8 +15,6 @@
 
 .redirect-window {
     width: 500px;
-    
-    background: #c7c7c7;
     background: #383838;
     border-radius: 10px;
     border: 2px solid white;
@@ -65,7 +28,7 @@
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.redirect-button {
+a.redirect-button, a.redirect-button:link, a.redirect-button:visited {
     display: inline-block;
     width:220px;
     text-align: center;
@@ -85,11 +48,13 @@
 
 .redirect-go {
     background-color:rgb(168, 255, 140);
+    color:rgb(43, 9, 0);
     left:0;
 }
 
 .redirect-cancel {
     background-color:rgb(255, 140, 140);
+    color:rgb(43, 9, 0);
     right:0;
 }
 
@@ -124,25 +89,32 @@
    height: auto;
 }
 
+#veal-image {
+    right:20px;
+    top:10px;
+    position:absolute;
+    z-index:10;
+    width:100px;
+    margin-right:10px;
+}
+
 
         </style>
     </head>
     <body>
+        <div>
         <div id="redirect-overlay" class="redirect-active">
             <div class="redirect-window">
                 <div style="padding:20px;">
-                    <img src="Veal.svg" style="right:20px;top:10px;;position:absolute;z-index:10;width:100px;margin-right:10px;"/>
+                    <img src="Veal.svg" id="veal-image"/>
                 <p class="redirect-text" style="margin-top:45px">
                     Following this link will take you to:
                     </p>
-<!--                    <div style="display:inline-block;text-align:right; width:100%;position:relative;top:-100px;"><img src="Veal.svg" style="position:relative;width:100px;margin-right:10px;"/></div>-->
 <p class="redirect-text" style="margin-top:20px;">
-                <span style="text-decoration:underline;color:rgb(178, 255, 255);font-size:20px;line-height:30px;">http://this.is.evil.com/</span>
+                <p id="redirect-url" style="text-decoration:underline;color:rgb(178, 255, 255);font-size:20px;line-height:30px;word-wrap:break-word;">http://this.is.evil.com/soveryevil/loremipsumdolersitamet</p>
 </p>             
                 <p class="redirect-text" style="margin-top:20px;margin-bottom:20px;">
                     Would you like to continue?
-<!--                    <span style="color:rgb(255, 140, 140);text-decoration: underline;font-weight: bold">Cancel</span>
-                    <span style="color:rgb(168, 255, 140);text-decoration: underline;font-weight: bold">Go</span>-->
                 </p>
                 <div id="redirect-confirm">
                     <div style="display:inline;text-align:left;width:100%;">
@@ -154,6 +126,7 @@
                 </div>
                 </div>
             </div>
+        </div>
         </div>
     </body>
 </html>
