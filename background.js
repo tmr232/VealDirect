@@ -30,21 +30,29 @@ function callbackOnExecuteScriptFactory(tabId, message) {
 
 function callbackOnHeadersReceivedFactory(tabId, originalUrl) {
     function callbackOnHeadersReceived(info) {
+        // Remove the callback
+        chrome.webRequest.onHeadersReceived.removeListener(arguments.callee);
+        
+        // Handle the callback
         console.log(info);
         console.log("Abc");
         var redirectLocation = originalUrl;
         console.log(info.statusLine.match(redirectRE));
         if (null !== info.statusLine.match(redirectRE)) {
-            /* Get the redirect url */
+            // On redirect - try and see if there is another level
+            // of indirection.
             redirectLocation = getLocation(info.responseHeaders);
+            uncoverUrl(redirectLocation, tabId);
+            return {cancel:true};
         }
-		/* Inject code to set a listener on the events... */
-		var message = {type:"getClickedEl", original:originalUrl, redirect:redirectLocation};
-                console.log(message);
-		chrome.tabs.sendMessage(tabId, message);
-                console.log("sent");
 
-        chrome.webRequest.onHeadersReceived.removeListener(arguments.callee);
+        // If there are no more indirections (no new URL), show popup.
+        /* Inject code to set a listener on the events... */
+        var message = {type:"getClickedEl", original:originalUrl, redirect:redirectLocation};
+        console.log(message);
+        chrome.tabs.sendMessage(tabId, message);
+        console.log("sent");
+
         return {cancel:true};
     }
     
@@ -61,18 +69,25 @@ function sendXHR(url) {
 }
 
 
+function uncoverUrl(url, tabId) {
+    chrome.webRequest.onHeadersReceived.addListener(
+            callbackOnHeadersReceivedFactory(tabId, url),
+            {types:["xmlhttprequest"], urls:[url]},
+            ["blocking", "responseHeaders"]
+        );
+    
+    var xhr = sendXHR(url);
+    return xhr;
+}
+
+
 function onClickCallback(info, tab) {
     console.log(info);
     console.log(tab);
     var linkUrl = info.linkUrl;
     
-    chrome.webRequest.onHeadersReceived.addListener(
-            callbackOnHeadersReceivedFactory(tab.id, linkUrl),
-            {types:["xmlhttprequest"], urls:[linkUrl]},
-            ["blocking", "responseHeaders"]
-        );
+    var xhr = uncoverUrl(linkUrl, tab.id);
     
-    var xhr = sendXHR(linkUrl);
     console.log(xhr);
 }
 
